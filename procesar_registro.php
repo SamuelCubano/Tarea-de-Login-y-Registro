@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          header("Location: index.php?accion=registro");
          exit();
     }
-    $contrasena_hash = password_hash($contrasena_plana, PASSWORD_DEFAULT);
+    $contrasena_hash = md5($contrasena_plana);
     $fecha_registro = date('Y-m-d H:i:s'); 
 
     // 3. INSERTAR DATOS (Usando Sentencias Preparadas)

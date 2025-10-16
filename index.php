@@ -24,8 +24,9 @@ if (isset($_SESSION['alerta'])) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/cf1fb60fea.js" crossorigin="anonymous"></script>
     <style>
-        body {
+    body {
     font-family: 'Poppins', sans-serif;
+    /* Fondo: Asegúrate que 'img/12.gif' exista */
     background: url('img/12.gif') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
@@ -34,11 +35,15 @@ if (isset($_SESSION['alerta'])) {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* Esto asegura que el contenido ocupe toda la altura de la vista */
+    min-height: 100vh;
 }
 
+/* Contenedor del Formulario */
 .contenedor-formulario {
+    /* Fondo de cristal (glassmorphism) */
     background: rgba(255, 255, 255, 0.12);
+    /* Recomendación: Puedes probar con rgba(0, 0, 0, 0.4) para un fondo más oscuro */
     backdrop-filter: blur(15px);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -47,16 +52,28 @@ if (isset($_SESSION['alerta'])) {
     max-width: 400px;
     text-align: center;
     animation: fadeIn 0.8s ease-in-out;
+    /* Margen superior/inferior para evitar superponerse con header/footer al hacer scroll */
+    margin: 80px 0;
+
+    width: 90%;
+    max-width: 400px; /* Mantenemos este límite para pantallas grandes */
+    text-align: center;
+    /* CAMBIO CLAVE: Agregar márgenes automáticos para centrado horizontal */
+    margin-left: auto;
+    margin-right: auto;
+    /* Agregar un margen vertical para asegurar que no se pegue al header/footer */
+    margin-top: 80px; 
+    margin-bottom: 80px;
 }
 
-/* Título */
+/* Título de los formularios (Iniciar Sesión / Registrarse) */
 h1 {
     font-size: 26px;
     margin-bottom: 25px;
     color: #fff;
 }
 
-/* Opciones superiores */
+/* Opciones superiores (Botones) */
 .opciones-formulario {
     display: flex;
     justify-content: center;
@@ -80,17 +97,18 @@ h1 {
 }
 
 .opciones-formulario button.activo {
-    color: #00bfff;
+    color: #00bfff; /* Color azul neón */
     border-bottom: 2px solid #00bfff;
 }
 
-/* Inputs */
+/* Inputs de texto, email y password */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 12px 15px;
-    margin: 10px 0 20px -15px;
+    /* Ajuste: Eliminado el margen negativo para mejor responsividad */
+    margin: 10px 0 20px 0; 
     border: none;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.15);
@@ -98,6 +116,7 @@ input[type="password"] {
     font-size: 15px;
     outline: none;
     transition: all 0.3s ease;
+    /* La etiqueta <label> no aparece en el HTML adjunto, pero es buena práctica tenerla */
 }
 
 input:focus {
@@ -105,7 +124,7 @@ input:focus {
     box-shadow: 0 0 5px #00bfff;
 }
 
-/* Botón principal */
+/* Botón principal (Entrar / Crear Cuenta) */
 button[type="submit"] {
     width: 100%;
     background: linear-gradient(90deg, #00bfff, #007bff);
@@ -124,7 +143,7 @@ button[type="submit"]:hover {
     box-shadow: 0 4px 12px rgba(0, 191, 255, 0.5);
 }
 
-/* Alertas */
+/* Estilos de Alertas (PHP) */
 .alerta-mensaje {
     padding: 12px;
     border-radius: 8px;
@@ -145,26 +164,10 @@ button[type="submit"]:hover {
     border: 1px solid rgba(245, 198, 203, 0.7);
 }
 
-/* Animación de entrada */
+/* Animación de entrada del formulario */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsivo */
-@media (max-width: 480px) {
-    .contenedor-formulario {
-        padding: 30px 25px;
-    }
-
-    h1 {
-        font-size: 22px;
-    }
-
-    .opciones-formulario button {
-        font-size: 14px;
-        margin: 0 10px;
-    }
 }
 
 /* Header */
@@ -186,10 +189,6 @@ button[type="submit"]:hover {
 
 header {
     border-bottom: solid 2px cornflowerblue;
-}
-
-footer {
-    border-top: solid 2px cornflowerblue;
 }
 
 .main-header .logo {
@@ -215,8 +214,10 @@ footer {
     backdrop-filter: blur(8px);
     color: #ccc;
     font-size: 14px;
+    border-top: solid 2px cornflowerblue;
 }
 
+/* Estilo del ícono de GitHub */
 i {
     margin-left: 10px;
     color: #ccc;
@@ -228,15 +229,45 @@ i {
 i:hover {
     color: #00bfff;
 }
+
+/* ==================================== */
+/* RESPONSIVO (MEJORAS PARA CELULAR)    */
+/* ==================================== */
+@media (max-width: 480px) {
+    /* Contenedor del formulario */
+    .contenedor-formulario {
+        padding: 30px 20px;
+        width: 95%; /* Esto asegura que ocupe casi todo el ancho de la pantalla */
+        /* Eliminamos el max-width (o lo aumentamos) para que pueda crecer */
+        max-width: 90%; /* <--- CAMBIO CLAVE: Aumentar el límite o ponerlo más cercano al 100% */
+        margin: 70px 0;
+    }
+    /* ... (el resto de tu código para móvil) ... */
+    .main-header .logo h2 {
+        font-size: 16px; 
+    }
+    
+    .main-footer {
+        padding: 10px 5px;
+        font-size: 12px;
+    }
+    
+    .main-footer i {
+        font-size: 24px;
+        margin-left: 5px; 
+        display: block;
+        margin-top: 5px;
+    }
+}
     </style>
 </head>
 <body>
     <header class="main-header">
-    <div class="logo">
-        <img src="img/IUJO (1).png" alt="Logo" height="40">
-        <h2>Samuel Cubano</h2>
-    </div>
-</header>
+        <div class="logo">
+            <img src="img/IUJO (1).png" alt="Logo" height="40">
+            <h2>Samuel Cubano & Keiver Blanco</h2>
+        </div>
+    </header>
 
     <div class="contenedor-formulario">
         
@@ -278,8 +309,9 @@ i:hover {
     </div>
 
     <footer class="main-footer">
-    <p>© <?php echo date("Y"); ?> Samuel Cubano / CI: 32935820</p><a href="https://github.com/SamuelCubano/Tarea-de-Login-y-Registro" target="_blank"><i class="fa-brands fa-github"></i></a>
-</footer>
+        <p>© <?php echo date("Y"); ?> Samuel Cubano CI: 32935820 & Keiver Blanco CI:</p>
+        <a href="https://github.com/SamuelCubano/Tarea-de-Login-y-Registro" target="_blank"><i class="fa-brands fa-github"></i></a>
+    </footer>
 
     <script>
         function mostrarFormulario(tipo) {

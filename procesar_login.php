@@ -20,7 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conexion->real_escape_string($_POST['email']);
     $contrasena_ingresada = $_POST['contrasena'];
 
-    // 2. Buscar el usuario (Usando Sentencias Preparadas para seguridad)
+    // --- NUEVA LÓGICA DE ADMINISTRADOR ---
+    if ($email === 'admin@admin.com' && $contrasena_ingresada === 'admin') {
+        $_SESSION['loggedin'] = TRUE;
+        $_SESSION['user_nombre'] = 'Administrador';
+        $_SESSION['es_admin'] = TRUE; // Marca la sesión como administrador
+        
+        header("Location: admin_panel.php"); // Redirige al nuevo panel de administrador
+        exit;
+    }
+    // ------------------------------------
+
+    // 2. Buscar el usuario (Usando Sentencias Preparadas para seguridad) - Lógica de usuario normal
     $stmt = $conexion->prepare("SELECT id, nombre, contrasena FROM usuarios WHERE email = ?");
     $stmt->bind_param("s", $email); 
     $stmt->execute();
@@ -32,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hash_guardado = $usuario['contrasena'];
         
         // 3. Verificar Contraseña
-        if (password_verify($contrasena_ingresada, $hash_guardado)) {
-            
-            // ÉXITO: Crear la Sesión y Redirigir
+        if (md5($contrasena_ingresada) === $hash_guardado) {            
+            // ÉXITO: Crear la Sesión y Redirigir (Usuario normal)
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['user_id'] = $usuario['id'];
             $_SESSION['user_nombre'] = $usuario['nombre'];
+            $_SESSION['es_admin'] = FALSE; // Marca la sesión como NO administrador
             
             header("Location: dashboard.php");
             exit;
@@ -52,10 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
     } else {
         // FALLO CLAVE: Usuario NO encontrado
-        // El mensaje específico que solicitaste:
         $_SESSION['alerta'] = "¡Esta cuenta no existe! Por favor, verifica tu correo o regístrate en la pestaña de al lado.";
         $_SESSION['tipo_alerta'] = 'error';
-        header("Location: index.php?accion=registro"); // Lo redirigimos a la pestaña de Registro
+        header("Location: index.php?accion=registro"); 
         exit;
     }
 
